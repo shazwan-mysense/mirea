@@ -32,6 +32,8 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 86px;
 }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
 
 body {
   background: var(--bg);
@@ -505,22 +507,16 @@ h3 { font-weight: 500; letter-spacing: -0.02em; }
 .post h3 { font-size: 15.5px; line-height: 1.4; margin-bottom: 8px; max-width: 340px; }
 .post__meta { font-size: 13px; color: var(--muted); }
 
-/* ---------- Full-bleed band ---------- */
+/* ---------- Full-bleed band (sky-cut tower render sits on the page bg) ---------- */
 .bleed {
-  position: relative;
-  height: clamp(380px, 70vh, 660px);
+  background: var(--bg);
+  padding-top: clamp(30px, 5vw, 70px);
 }
-.bleed img { width: 100%; height: 100%; object-fit: cover; }
-.bleed::before,
-.bleed::after {
-  content: "";
-  position: absolute;
-  left: 0; right: 0;
-  height: 34%;
-  pointer-events: none;
+.bleed img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
-.bleed::before { top: 0; background: linear-gradient(to bottom, var(--bg), rgba(240, 239, 235, 0)); }
-.bleed::after { bottom: 0; background: linear-gradient(to top, var(--bg), rgba(240, 239, 235, 0)); }
 
 /* ---------- Register CTA ---------- */
 .cta {

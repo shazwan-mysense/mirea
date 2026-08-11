@@ -7,6 +7,15 @@ if (new URLSearchParams(location.search).has('instant')) {
   document.documentElement.classList.add('instant');
 }
 
+/* ---------- Smooth scroll (Lenis) ---------- */
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let lenis = null;
+if (!prefersReduced && typeof Lenis !== 'undefined') {
+  lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1 });
+  const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
+  requestAnimationFrame(raf);
+}
+
 /* ---------- Header state ---------- */
 const header = document.getElementById('header');
 const onScrollHeader = () => {
@@ -29,6 +38,20 @@ burger.addEventListener('click', () => {
   burger.setAttribute('aria-expanded', String(open));
 });
 menu.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+
+/* ---------- Anchor scrolling through Lenis ---------- */
+document.querySelectorAll('a[href^="#"]').forEach((a) => {
+  a.addEventListener('click', (e) => {
+    const id = a.getAttribute('href');
+    if (!id || id.length < 2) return;
+    const target = document.querySelector(id);
+    if (!target) return;
+    e.preventDefault();
+    closeMenu();
+    if (lenis) lenis.scrollTo(target, { offset: -78, duration: 1.3 });
+    else target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
 
 /* ---------- Scroll reveals (staggered via data-delay) ---------- */
 const revealEls = document.querySelectorAll('[data-reveal]');
