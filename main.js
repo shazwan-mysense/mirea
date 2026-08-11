@@ -57,10 +57,11 @@ if (counters.length && 'IntersectionObserver' in window) {
       cio.unobserve(el);
       const target = parseFloat(el.dataset.count);
       const decimals = parseInt(el.dataset.decimals || '0', 10);
-      const dur = 1600;
-      const t0 = performance.now();
+      const dur = 2000;
+      let t0 = null;
       const tick = (t) => {
-        const p = Math.min(1, (t - t0) / dur);
+        if (t0 === null) t0 = t;
+        const p = Math.min(1, Math.max(0, (t - t0) / dur));
         const eased = 1 - Math.pow(1 - p, 3);
         el.textContent = (target * eased).toFixed(decimals);
         if (p < 1) requestAnimationFrame(tick);
@@ -68,7 +69,7 @@ if (counters.length && 'IntersectionObserver' in window) {
       };
       requestAnimationFrame(tick);
     });
-  }, { rootMargin: '0px 0px -12% 0px' });
+  }, { rootMargin: '0px 0px -38% 0px' });
   counters.forEach((el) => cio.observe(el));
 } else {
   counters.forEach((el) => {
